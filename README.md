@@ -1,6 +1,7 @@
 # Privacy Tab
 
 Hide your Discord Client from people who shouldn't see it. Useful for a broad range of things.
+Keybind: F6
 
 Honorable Mentions: LuckFire#4800, NovalFuzzy#0004
 
