@@ -1,9 +1,10 @@
 {
-    "name": "Privacy Tab",
-    "version": "1.1.1",
-    "description": "Hide your stuff, why would you need this? ;)",
-    "author": "Hoofers#0001 | iman.engineer",
-    "license": "MIT",
-    "permissions": [ "keypresses" ]
+	"name": "Privacy Tab",
+	"version": "1.1.2",
+	"description": "Hide your stuff, why would you need this? ;)",
+	"author": "Hoofers#0001 | iman.engineer",
+	"license": "MIT",
+	"permissions": [
+		"keypresses"
+	]
 }
-   

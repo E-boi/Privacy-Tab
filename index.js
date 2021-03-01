@@ -1,93 +1,61 @@
 const { Plugin } = require('powercord/entities');
-const { React, getModule, FluxDispatcher, i18n: { Messages } } = require('powercord/webpack');
-const { description } = require('../pc-commands/commands/echo');
-const { Powercord } = require('../pc-updater/components/Icons');
-const { remote: { globalShortcut } } = require('electron');
 const Settings = require("./Settings")
-
 var privacyEnabled = false;
-var get;
-var set;
-var style;
 
 module.exports = class PrivacyTab extends Plugin {
+	startPlugin() {
+		this.loadStylesheet('style.scss')
+		const settings = powercord.api.settings._fluxProps('Privacy-Tab')
+		settings.getSetting('blur-scale', 1)
+		settings.getSetting('grayscale', false)
+		settings.getSetting('lock-app', true)
 
-    startPlugin(){
-        get = this.settings.get;
-        set = this.settings.set;
-        // make sure it's safe, idk if needed, but why not?
-        if (!get("toggle-keybind-value"))
-            set("toggle-keybind-value", "Ctrl+Shift+P");
-        if (!get("global-keybind"))
-            set("global-keybind", true);
-        if (!get("blur-scale"))
-            set("blur-scale", 1);
-        if (!get("grayscale"))
-            set("grayscale", false);
-        if (!get("lock-app"))
-            set("lock-app", true);
-        
-        // init
-        globalShortcut.register(get("toggle-keybind-value"), this.togglePrivacy);
+		// init
+		document.onkeyup = this.togglePrivacy;
 
-        style = document.createElement('style');
-        document.head.appendChild(style);
-        style.type = 'text/css';
-        style.appendChild(document.createTextNode(`.layerContainer-yqaFcK { transition: .3s linear; }`));
+		// register settings
+		powercord.api.settings.registerSettings(this.entityID, {
+			category: this.entityID,
+			label: 'Privacy Tab',
+			render: Settings
+		});
+	}
 
-        // register settings
-        powercord.api.settings.registerSettings(this.entityID, {
-            category: this.entityID,
-            label: 'Privacy Tab',
-            render: Settings
-        });
-    }
+	pluginWillUnload() {
+		powercord.api.settings.unregisterSettings(this.entityID);
+		if (privacyEnabled) {
+			document.querySelector('.layers-3iHuyZ').classList.remove('blur-window');
+		}
+	}
 
-    pluginWillUnload(){
-        globalShortcut.unregister(get("toggle-keybind-value"));
-        powercord.api.settings.unregisterSettings(this.entityID);
-        if (privacyEnabled){
-            togglePrivacy();
-        }
-        style.parentNode.removeChild(style);
-    }
-
-    // keybind update event, from settings
-    updateKeybinds(oldKeybind, newKeybind){
-        console.log(this.settings)
-        globalShortcut.unregister(oldKeybind)
-        globalShortcut.register(newKeybind, this.togglePrivacy)
-    }
-
-    // toggle for privacy
-    togglePrivacy(){
-        // check for global keybind, user safety #1 :P
-        if (!get("global-keybind") && !document.hasFocus()){
-            return;
-        }
-        
-        privacyEnabled = !privacyEnabled;
-        var blurElement = document.getElementsByClassName("app-1q1i1E")[0];
-
-        if (privacyEnabled){
-            // enable blur
-            var grayscale = "";
-            if (get("grayscale")){
-                grayscale = "grayscale(100%)"
-            }
-            var interaction = "";
-            if (get("lock-app")){
-                interaction = "* { pointer-events: none !important; }"
-            }
-            var blurAmount = get("blur-scale")*3;
-            blurElement.style = `transition: .3s linear; filter: blur(${blurAmount}px) ${grayscale};`;
-            style.replaceChild(document.createTextNode(`.layerContainer-yqaFcK { transition: .3s linear; filter: blur(${blurAmount}px) ${grayscale}; } ${interaction}`), style.childNodes[0]);
-        } else {
-            // disable blur, durr
-            blurElement.style = `transition: .3s linear;`;
-            style.replaceChild(document.createTextNode(`.layerContainer-yqaFcK { transition: .3s linear; }`), style.childNodes[0]);
-        }
-
-    }
-
+	// toggle for privacy
+	togglePrivacy(key) {
+		const { getSetting: get } = powercord.api.settings._fluxProps('Privacy-Tab')
+		const blurElement = document.querySelector('.layers-3iHuyZ');
+		// user safety #1 :P
+		if (!document.hasFocus()) {
+			return;
+		}
+		if (key.key === 'F6') {
+			privacyEnabled = !privacyEnabled;
+			if (privacyEnabled) {
+				// enable blur
+				let grayscale = "0";
+				if (get("grayscale")) {
+					grayscale = "100%";
+				}
+				let interaction = "all";
+				if (get("lock-app")) {
+					interaction = "none";
+				}
+				const blurAmount = get("blur-scale") * 3;
+				blurElement.style.setProperty('--blur-window', `blur(${blurAmount}px) grayscale(${grayscale})`);
+				blurElement.style.setProperty('--pointer', `${interaction}`);
+				blurElement.classList.add('blur-window');
+			} else {
+				blurElement.classList.replace('blur-window', 'unblur');
+				setTimeout(() => blurElement.classList.remove('unblur'), 1000);
+			};
+		}
+	}
 };
