@@ -21,7 +21,7 @@ module.exports = class Settings extends React.PureComponent {
               this.setState({value: "F6"})
               updateSetting("keybind", "F6")
            	}}
-          >Toggle Keybind (reload required to take affect)
+          >Toggle Keybind
 				</KeybindRecorder>
 				<SliderInput
 					stickToMarkers

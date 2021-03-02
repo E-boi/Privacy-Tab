@@ -63,6 +63,8 @@ module.exports = class PrivacyTab extends Plugin {
 				blurElement.classList.replace('blur-window', 'unblur');
 				setTimeout(() => blurElement.classList.remove('unblur'), 1000);
 			};
-		}
+		};
+		// if keybind gets changed
+		if (keybind !== get('keybind')) keybind = get('keybind')
 	}
 };
