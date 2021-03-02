@@ -1,16 +1,17 @@
 :root {
 	--blur-window: blur(1px) grayscale(0);
 	--pointer: none;
+	--blur-timing: 1s;
 }
 
 .blur-window {
-	transition: 1s linear;
+	transition: var(--blur-timing) linear;
 	filter: var(--blur-window);
 	pointer-events: var(--pointer) !important;
 }
 
 .unblur {
-	transition: 1s linear;
+	transition: var(--blur-timing) linear;
 	filter: none;
 	pointer-events: all !important;
 }
