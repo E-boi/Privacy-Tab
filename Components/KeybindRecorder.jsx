@@ -18,7 +18,6 @@ const renameKeys = Object.freeze({
 module.exports = class TextInput extends React.PureComponent {
   constructor (props) {
     super(props);
-    console.log(props)
     this.state = {
       id: `pc-kbr-${Date.now()}-${Math.round(Math.random() * 1000)}`,
       recording: false,
