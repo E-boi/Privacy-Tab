@@ -11,8 +11,8 @@ module.exports = class PrivacyTab extends Plugin {
 		if (!get('blur-scale')) set('blur-scale', 2);
 		if (!get('grayscale')) set('grayscale', false);
 		if (!get('lock-app')) set('lock-app', true);
-		if (!get('blurTiming')) set('blurTiming', true)
-		if (!get('keybind')) set('keybind', 'F6')
+		if (!get('blurTiming')) set('blurTiming', 1);
+		if (!get('keybind')) set('keybind', 'F6');
 		keybind = get('keybind', 'F6');
 
 		// init
