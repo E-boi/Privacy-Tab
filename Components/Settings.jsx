@@ -12,14 +12,14 @@ module.exports = class Settings extends React.PureComponent {
 		const { getSetting, toggleSetting, updateSetting } = this.props
 		return (
 			<div>
-				<KeybindRecorder value={getSetting("keybind")} 
+				<KeybindRecorder value={getSetting('keybind', '6')} 
           onChange={(e) => {
         		this.setState({value: e})
-        		updateSetting("keybind", e)
+        		updateSetting('keybind', e)
             }}
             onReset={() => {
-              this.setState({value: "F6"})
-              updateSetting("keybind", "F6")
+              this.setState({value: 'F6'})
+              updateSetting('keybind', 'F6')
            	}}
           >Toggle Keybind
 				</KeybindRecorder>

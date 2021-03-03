@@ -1,16 +1,17 @@
 const { Plugin } = require('powercord/entities');
-const Settings = require("./Components/Settings")
+const Settings = require("./Components/Settings");
 var privacyEnabled = false;
 let keybind;
 
 module.exports = class PrivacyTab extends Plugin {
 	startPlugin() {
-		this.loadStylesheet('style.scss')
+		this.loadStylesheet('style.scss');
 		const settings = powercord.api.settings._fluxProps('Privacy-Tab');
 		settings.getSetting('blur-scale', 1);
 		settings.getSetting('grayscale', false);
 		settings.getSetting('lock-app', true);
 		settings.getSetting('blurTiming', 1);
+		settings.getSetting('keybind', 'F6');
 		keybind = settings.getSetting('keybind', 'F6');
 
 		// init
