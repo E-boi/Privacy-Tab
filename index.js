@@ -6,13 +6,14 @@ let keybind;
 module.exports = class PrivacyTab extends Plugin {
 	startPlugin() {
 		this.loadStylesheet('style.scss');
-		const settings = powercord.api.settings._fluxProps('Privacy-Tab');
-		settings.getSetting('blur-scale', 1);
-		settings.getSetting('grayscale', false);
-		settings.getSetting('lock-app', true);
-		settings.getSetting('blurTiming', 1);
-		settings.getSetting('keybind', 'F6');
-		keybind = settings.getSetting('keybind', 'F6');
+		console.log(this.settings)
+		const { get, set } = this.settings;
+		if (!get('blur-scale')) set('blur-scale', 2);
+		if (!get('grayscale')) set('grayscale', false);
+		if (!get('lock-app')) set('lock-app', true);
+		if (!get('blurTiming')) set('blurTiming', true)
+		if (!get('keybind')) set('keybind', 'F6')
+		keybind = get('keybind', 'F6');
 
 		// init
 		document.body.addEventListener("keyup", this.togglePrivacy);
