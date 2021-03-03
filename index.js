@@ -6,7 +6,6 @@ let keybind;
 module.exports = class PrivacyTab extends Plugin {
 	startPlugin() {
 		this.loadStylesheet('style.scss');
-		console.log(this.settings)
 		const { get, set } = this.settings;
 		if (!get('blur-scale')) set('blur-scale', 2);
 		if (!get('grayscale')) set('grayscale', false);
